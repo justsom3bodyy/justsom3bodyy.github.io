@@ -11,27 +11,21 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* Figma-exact */
-    --grad-0: #314450;
-    --grad-78: #05131B;
-    --grad-100: #000000;
-
-    --fill-light: rgba(26, 45, 62, .60);      /* большие карточки */
-    --stroke-light: rgba(255, 255, 255, .094); /* FFFFFF 9.41% */
-    --fill-dark: rgba(22, 36, 54, .85);        /* статы / кнопки / строки */
-    --stroke-dark: rgba(42, 69, 96, .55);      /* 2A4560 */
+    --grad-0: #314450; --grad-78: #05131B; --grad-100: #000000;
+    --fill-light: rgba(26, 45, 62, .60);
+    --stroke-light: rgba(255, 255, 255, .094);
+    --fill-dark: rgba(22, 36, 54, .85);
+    --stroke-dark: rgba(42, 69, 96, .55);
     --fill-challenge: #1F2F3E;
     --fill-lb: #0E2030;
     --stroke-lb: #1E3A52;
-
     --accent: #4A9EFF;
     --text-1: #FFFFFF;
     --text-2: rgba(255, 255, 255, .55);
     --text-3: rgba(255, 255, 255, .38);
     --gray-avatar: #C2C6CA;
     --gray-thumb: #C8CDD2;
-
-    --pad: 18px;            /* (390 - 353) / 2 ≈ 18 */
+    --pad: 18px;
     --r-card: 22px;
     --r-box: 14px;
     --r-sm: 12px;
@@ -50,66 +44,41 @@
     overflow-x: hidden;
   }
 
-  /* ============ SCREENS ============ */
-  .screen {
-    display: none;
-    padding: 20px var(--pad) 110px;   /* низ — место под nav-pill */
-  }
+  .screen { display: none; padding: 20px var(--pad) 110px; }
   .screen.active { display: block; animation: in .22s ease; }
   @keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
 
-  .screen-head {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 18px;
-  }
+  .screen-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
   .screen-head h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
   .screen-head a  { font-size: 14px; font-weight: 500; color: var(--accent); text-decoration: none; }
 
-  /* ============ CARDS ============ */
   .card {
-    background: var(--fill-light);
-    border: 1px solid var(--stroke-light);
-    border-radius: var(--r-card);
-    padding: 20px;
+    background: var(--fill-light); border: 1px solid var(--stroke-light);
+    border-radius: var(--r-card); padding: 20px;
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
   .card + .card { margin-top: 14px; }
-
-  .card-head {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 6px;
-  }
+  .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .card-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
   .card-head a  { font-size: 13px; font-weight: 500; color: var(--accent); text-decoration: none; }
 
-  /* ============ PROFILE ============ */
+  /* Profile */
   .profile-row { display: flex; align-items: center; gap: 16px; }
-  .avatar {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: var(--gray-avatar);
-    overflow: hidden; flex-shrink: 0;
-  }
+  .avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--gray-avatar); overflow: hidden; flex-shrink: 0; }
   .avatar img { width: 100%; height: 100%; object-fit: cover; }
   .p-name { font-size: 24px; font-weight: 800; letter-spacing: -.4px; }
   .p-user { font-size: 14px; color: var(--text-2); margin-top: 3px; }
 
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-  .stat {
-    background: var(--fill-dark);
-    border: 1px solid var(--stroke-dark);
-    border-radius: var(--r-box);
-    padding: 14px 16px;
-  }
+  .stat { background: var(--fill-dark); border: 1px solid var(--stroke-dark); border-radius: var(--r-box); padding: 14px 16px; }
   .stat .l { font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--text-2); }
   .stat .v { font-size: 24px; font-weight: 800; letter-spacing: -.4px; margin-top: 4px; }
   .stat .v.blue { color: var(--accent); }
 
   .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
   .action {
-    background: var(--fill-dark);
-    border: 1px solid var(--stroke-dark);
-    border-radius: var(--r-box);
-    padding: 16px 6px 14px;
+    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
+    border-radius: var(--r-box); padding: 16px 6px 14px;
     display: flex; flex-direction: column; align-items: center; gap: 9px;
     cursor: pointer; transition: transform .12s;
   }
@@ -117,40 +86,25 @@
   .action svg { width: 24px; height: 24px; stroke: var(--text-1); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .action span { font-size: 13px; font-weight: 600; }
 
-  /* activity */
   .act { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
   .act + .act { border-top: 1px solid rgba(42, 69, 96, .35); }
-  .act-ico {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
-    display: grid; place-items: center; flex-shrink: 0;
-  }
+  .act-ico { width: 40px; height: 40px; border-radius: 50%; background: var(--fill-dark); border: 1px solid var(--stroke-dark); display: grid; place-items: center; flex-shrink: 0; }
   .act-ico svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .act-t { font-size: 14px; font-weight: 600; }
   .act-s { font-size: 12px; color: var(--text-2); margin-top: 2px; }
 
-  /* streaks */
   .streaks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
-  .streak {
-    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
-    border-radius: var(--r-sm); padding: 13px 12px;
-  }
+  .streak { background: var(--fill-dark); border: 1px solid var(--stroke-dark); border-radius: var(--r-sm); padding: 13px 12px; }
   .streak .t { font-size: 13px; font-weight: 600; }
   .streak .t b { color: var(--accent); font-weight: 700; }
   .streak .d { font-size: 11px; color: var(--text-2); line-height: 1.45; margin-top: 5px; }
 
-  /* ============ GAMES ============ */
+  /* Games */
   .challenge {
-    background: var(--fill-challenge);
-    border-radius: var(--r-card);
-    padding: 15px 16px;
-    display: flex; align-items: center; gap: 13px;
-    margin-bottom: 18px;
+    background: var(--fill-challenge); border-radius: var(--r-card);
+    padding: 15px 16px; display: flex; align-items: center; gap: 13px; margin-bottom: 18px;
   }
-  .ch-ico {
-    width: 46px; height: 46px; border-radius: 50%;
-    background: var(--accent); display: grid; place-items: center; flex-shrink: 0;
-  }
+  .ch-ico { width: 46px; height: 46px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; flex-shrink: 0; }
   .ch-ico svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .ch-t { font-size: 15px; font-weight: 700; }
   .ch-s { font-size: 13px; color: var(--text-2); margin-top: 2px; }
@@ -158,25 +112,13 @@
   .games { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 12px; }
   .game { cursor: pointer; transition: transform .12s; }
   .game:active { transform: scale(.97); }
-  .game .thumb {
-    width: 100%; aspect-ratio: 1;
-    background: var(--gray-thumb);
-    border-radius: var(--r-sm);
-  }
+  .game .thumb { width: 100%; aspect-ratio: 1; background: var(--gray-thumb); border-radius: var(--r-sm); }
   .game .n { font-size: 15px; font-weight: 600; margin-top: 9px; }
   .game .s { font-size: 12px; color: var(--text-2); margin-top: 3px; }
 
-  /* ============ LEADERBOARD ============ */
-  .lb {
-    background: var(--fill-lb);
-    border: 1px solid var(--stroke-lb);
-    border-radius: var(--r-card);
-    overflow: hidden;
-  }
-  .lb-head, .lb-row {
-    display: flex; align-items: center;
-    padding: 0 16px;
-  }
+  /* Leaderboard */
+  .lb { background: var(--fill-lb); border: 1px solid var(--stroke-lb); border-radius: var(--r-card); overflow: hidden; }
+  .lb-head, .lb-row { display: flex; align-items: center; padding: 0 16px; }
   .lb-head { height: 44px; border-bottom: 1px solid var(--stroke-lb); }
   .lb-head span { font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--text-2); }
   .lb-row { height: 62px; }
@@ -190,7 +132,7 @@
   .lb-head .c-score { text-align: right; width: 70px; }
   .lb-row .c-score { width: 70px; text-align: right; }
 
-  /* ============ SUB-SCREENS (игры) ============ */
+  /* Sub-screens */
   .sub { display: none; }
   .sub.active { display: block; animation: in .22s ease; }
   .back {
@@ -203,10 +145,7 @@
   .back:active { transform: scale(.96); }
 
   .joy-wrap { display: grid; place-items: center; margin: 22px 0 14px; }
-  .joy {
-    width: 196px; height: 196px; position: relative; border-radius: 50%;
-    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
-  }
+  .joy { width: 196px; height: 196px; position: relative; border-radius: 50%; background: var(--fill-dark); border: 1px solid var(--stroke-dark); }
   .joy button {
     position: absolute; width: 52px; height: 52px;
     background: rgba(26, 45, 62, .9); border: 1px solid var(--stroke-dark);
@@ -253,7 +192,7 @@
     font: 500 13px 'Inter', sans-serif; color: var(--text-1); cursor: pointer;
   }
 
-  /* ============ NAV PILL ============ */
+  /* Nav */
   .nav {
     position: fixed; left: 16px; right: 16px; bottom: calc(14px + env(safe-area-inset-bottom));
     height: 68px;
@@ -270,17 +209,12 @@
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
     color: var(--text-3); font-family: 'Inter', sans-serif;
   }
-  .tab .ic {
-    width: 36px; height: 36px; border-radius: 50%;
-    display: grid; place-items: center;
-    transition: background .18s;
-  }
+  .tab .ic { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; transition: background .18s; }
   .tab svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
   .tab .lb-l { font-size: 11px; font-weight: 500; }
   .tab.on { color: var(--accent); }
   .tab.on .ic { background: var(--accent); color: #fff; }
 
-  /* toast */
   .toast {
     position: fixed; top: 16px; left: 50%; translate: -50% -8px;
     background: rgba(22, 36, 54, .9); border: 1px solid var(--stroke-dark);
@@ -291,23 +225,27 @@
     z-index: 200; white-space: nowrap;
   }
   .toast.on { opacity: 1; translate: -50% 0; }
+
+  /* Skeleton loader */
+  .skel { display: inline-block; background: rgba(255,255,255,.08); border-radius: 4px; min-width: 40px; height: 1em; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
 </style>
 </head>
 <body>
 
-<!-- ================= PROFILE ================= -->
+<!-- ================================== profile -->
 <section class="screen active" id="scr-profile">
   <div class="card">
     <div class="profile-row">
       <div class="avatar" id="ava"></div>
       <div>
-        <div class="p-name" id="p-name">Имя</div>
-        <div class="p-user" id="p-user">@юзернейм</div>
+        <div class="p-name" id="p-name"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+        <div class="p-user" id="p-user"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
       </div>
     </div>
     <div class="stats">
-      <div class="stat"><div class="l">Очки</div><div class="v" id="v-score">12,450</div></div>
-      <div class="stat"><div class="l">Валюта</div><div class="v blue" id="v-bal">1,240</div></div>
+      <div class="stat"><div class="l">Очки</div><div class="v" id="v-score">—</div></div>
+      <div class="stat"><div class="l">Валюта</div><div class="v blue" id="v-bal">—</div></div>
     </div>
     <div class="actions">
       <div class="action">
@@ -326,31 +264,23 @@
   </div>
 
   <div class="card">
-    <div class="card-head"><h2>Недавняя активность</h2><a href="#">Показать все</a></div>
-    <div class="act">
-      <div class="act-ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M8 5h8"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></div>
-      <div><div class="act-t">Ежедневный бонус</div><div class="act-s">+150 валюты • 2ч назад</div></div>
-    </div>
-    <div class="act">
-      <div class="act-ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
-      <div><div class="act-t">Покупка</div><div class="act-s">+120 валюты • 5ч назад</div></div>
-    </div>
-    <div class="act">
-      <div class="act-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-      <div><div class="act-t">Настройки изменены</div><div class="act-s">Уведомления вкл • 1д назад</div></div>
+    <div class="card-head"><h2>Недавняя активность</h2><a href="#" class="chat-link">Показать все</a></div>
+    <div id="activity-list">
+      <div class="act"><div class="act-ico" style="visibility:hidden;"></div><div><div class="act-t"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="act-s"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div></div></div>
+      <div class="act"><div class="act-ico" style="visibility:hidden;"></div><div><div class="act-t"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="act-s"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div></div></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-head"><h2>Серии</h2><a href="#">Открыть в чате</a></div>
+    <div class="card-head"><h2>Серии</h2><a href="#" class="chat-link">Открыть в чате</a></div>
     <div class="streaks">
-      <div class="streak"><div class="t">Ежедн. заход <b>7д</b></div><div class="d">Играйте каждый день для наград</div></div>
-      <div class="streak"><div class="t">Ежен. победы <b>3/5</b></div><div class="d">Еще 2 победы для получения приза</div></div>
+      <div class="streak"><div class="t">Ежедн. заход <b id="streak-days">—</b></div><div class="d">Играйте каждый день для наград</div></div>
+      <div class="streak"><div class="t">Ежен. победы <b id="weekly-wins">—</b></div><div class="d">Еще победы для получения приза</div></div>
     </div>
   </div>
 </section>
 
-<!-- ================= GAMES ================= -->
+<!-- ================================== games -->
 <section class="screen" id="scr-games">
   <div class="screen-head"><h1>Игры</h1><a href="#" class="chat-link">Открыть в чате</a></div>
 
@@ -360,10 +290,10 @@
       <div><div class="ch-t">Ежедневный челлендж</div><div class="ch-s">Сыграйте 10 игр для получения приза</div></div>
     </div>
     <div class="games">
-      <div class="game" onclick="openSub('robot')"><div class="thumb"></div><div class="n">Управления роботом</div><div class="s">7 побед / 9 сыграно</div></div>
-      <div class="game" onclick="openSub('ttt')"><div class="thumb"></div><div class="n">Крестики нолики</div><div class="s">2 победы / 4 сыграно</div></div>
-      <div class="game" onclick="openSub('rps')"><div class="thumb"></div><div class="n">К-Н-Б</div><div class="s">26 побед / 51 сыграно</div></div>
-      <div class="game" onclick="openSub('race')"><div class="thumb"></div><div class="n">Гонка роботов</div><div class="s">26 побед / 51 сыграно</div></div>
+      <div class="game" onclick="openSub('robot')"><div class="thumb"></div><div class="n">Управления роботом</div><div class="s" id="g-robot">— побед / — сыграно</div></div>
+      <div class="game" onclick="openSub('ttt')"><div class="thumb"></div><div class="n">Крестики нолики</div><div class="s" id="g-ttt">— побед / — сыграно</div></div>
+      <div class="game" onclick="openSub('rps')"><div class="thumb"></div><div class="n">К-Н-Б</div><div class="s" id="g-rps">— побед / — сыграно</div></div>
+      <div class="game" onclick="openSub('race')"><div class="thumb"></div><div class="n">Гонка роботов</div><div class="s" id="g-race">— побед / — сыграно</div></div>
     </div>
   </div>
 
@@ -408,16 +338,19 @@
   </div>
 </section>
 
-<!-- ================= TOP ================= -->
+<!-- ================================== top -->
 <section class="screen" id="scr-top">
   <div class="screen-head"><h1>Топ игроков</h1><a href="#" class="chat-link">Открыть в чате</a></div>
   <div class="lb">
     <div class="lb-head"><span class="c-rank">Ранг</span><span class="c-user"></span><span class="c-score">Очки</span></div>
-    <div id="lb-body"></div>
+    <div id="lb-body">
+      <div class="lb-row"><span class="c-rank"><span class="skel">1</span></span><span class="c-user"><span class="ava"></span><span class="nm"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><span class="c-score"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></div>
+      <div class="lb-row"><span class="c-rank"><span class="skel">2</span></span><span class="c-user"><span class="ava"></span><span class="nm"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><span class="c-score"><span class="skel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></div>
+    </div>
   </div>
 </section>
 
-<!-- ================= NAV ================= -->
+<!-- ================================= nav -->
 <nav class="nav">
   <button class="tab on" onclick="go('scr-profile', this, false)">
     <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></svg></span>
@@ -436,15 +369,18 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* ================================== config */
+// Меняется на production (например https://api.mybot.com)
+const API_URL = "http://localhost:8081";
+
+/* ================================== webapp */
 const tg = window.Telegram?.WebApp;
 if (tg) { tg.ready(); tg.expand(); }
 
-const user = tg?.initDataUnsafe?.user || { first_name: 'Имя', username: 'юзернейм', photo_url: null };
-document.getElementById('p-name').textContent = user.first_name || 'Имя';
-document.getElementById('p-user').textContent = '@' + (user.username || 'юзернейм');
-if (user.photo_url) document.getElementById('ava').innerHTML = `<img src="${user.photo_url}" alt="">`;
+let profileData = null;
+let topLoaded = false;
 
-/* nav */
+/* ================================== nav */
 function go(id, btn, isGames) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -454,6 +390,7 @@ function go(id, btn, isGames) {
     document.querySelectorAll('.sub').forEach(s => s.classList.remove('active'));
     const m = document.getElementById('games-main'); if (m) m.style.display = '';
   }
+  if (id === 'scr-top' && !topLoaded) loadTop();
   scrollTo({ top: 0 });
 }
 function openSub(n) {
@@ -468,33 +405,177 @@ function closeSub(n) {
   document.getElementById('games-main').style.display = '';
 }
 
-/* toast */
+/* ================================== тосты ура */
 let toastT;
 function toast(m) {
   const t = document.getElementById('toast');
   t.textContent = m; t.classList.add('on');
-  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2000);
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2200);
 }
 
-/* robot */
+/* ================================== api */
+async function loadProfile() {
+  if (!tg?.initData) {
+    console.warn("initData not available (open inside Telegram)");
+    return;
+  }
+  try {
+    const r = await fetch(`${API_URL}/api/me?initData=${encodeURIComponent(tg.initData)}`);
+    if (r.status === 401) { toast("Ошибка авторизации"); return; }
+    if (!r.ok) throw new Error(r.status);
+    profileData = await r.json();
+    renderProfile();
+  } catch (e) {
+    console.error("loadProfile failed:", e);
+  }
+}
+
+function renderProfile() {
+  if (!profileData) return;
+  const p = profileData;
+
+  document.getElementById('p-name').textContent = p.username;
+  document.getElementById('p-user').textContent = '@' + p.username;
+  document.getElementById('v-score').textContent = p.score.toLocaleString('ru-RU');
+  document.getElementById('v-bal').textContent = p.balance.toLocaleString('ru-RU');
+
+  if (p.avatar_url) {
+    document.getElementById('ava').innerHTML = `<img src="${p.avatar_url}" alt="">`;
+  }
+
+  document.getElementById('streak-days').textContent = p.streak_days + 'д';
+  document.getElementById('weekly-wins').textContent = p.weekly_wins + '/5';
+
+  const g = p.games || {};
+  const fmt = (id) => {
+    const d = g[id] || {wins: 0, played: 0};
+    return `${d.wins} побед / ${d.played} сыграно`;
+  };
+  document.getElementById('g-robot').textContent = fmt('robot');
+  document.getElementById('g-ttt').textContent   = fmt('ttt');
+  document.getElementById('g-rps').textContent   = fmt('rps');
+  document.getElementById('g-race').textContent  = fmt('race');
+
+  const list = document.getElementById('activity-list');
+  if (!p.activity || p.activity.length === 0) {
+    list.innerHTML = '<p style="font-size:13px;color:var(--text-2);padding:8px 0;">Пока нет активности. Сыграйте в игру!</p>';
+  } else {
+    list.innerHTML = p.activity.map(a => {
+      const parts = [];
+      if (a.amount_b) parts.push((a.amount_b > 0 ? '+' : '') + a.amount_b + ' 💰');
+      if (a.amount_s) parts.push((a.amount_s > 0 ? '+' : '') + a.amount_s + ' XP');
+      const sub = parts.join(' • ') + ' • ' + formatTime(a.timestamp);
+      return `
+        <div class="act">
+          <div class="act-ico">${iconFor(a.type)}</div>
+          <div>
+            <div class="act-t">${escape(a.text)}</div>
+            <div class="act-s">${sub}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+}
+
+function iconFor(type) {
+  const gift = '<svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M8 5h8"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+  const cart = '<svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
+  const gear = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+  if (type === 'bonus') return gift;
+  if (type === 'purchase') return cart;
+  return gear;
+}
+
+function formatTime(ts) {
+  const d = new Date(ts.replace(' ', 'T'));
+  const diff = (Date.now() - d.getTime()) / 1000;
+  if (isNaN(diff)) return '';
+  if (diff < 60) return 'только что';
+  if (diff < 3600) return Math.floor(diff / 60) + 'мин назад';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'ч назад';
+  return Math.floor(diff / 86400) + 'д назад';
+}
+
+function escape(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function loadTop() {
+  try {
+    const r = await fetch(`${API_URL}/api/top`);
+    if (!r.ok) throw new Error(r.status);
+    const list = await r.json();
+    topLoaded = true;
+    const el = document.getElementById('lb-body');
+    if (!list.length) {
+      el.innerHTML = '<p style="padding:20px;text-align:center;color:var(--text-2);">Пока нет игроков</p>';
+      return;
+    }
+    el.innerHTML = list.map((u, i) => `
+      <div class="lb-row">
+        <span class="c-rank">${i + 1}</span>
+        <span class="c-user">
+          <span class="ava">${u.avatar_url ? `<img src="${escape(u.avatar_url)}" alt="">` : ''}</span>
+          <span class="nm">${escape(u.username)}</span>
+        </span>
+        <span class="c-score">${u.score.toLocaleString('ru-RU')}</span>
+      </div>
+    `).join('');
+  } catch (e) {
+    console.error("loadTop failed:", e);
+  }
+}
+
+async function sendTask(task) {
+  if (!tg?.initData) {
+    console.log("[dev mode] task:", task);
+    return { ok: true, b_change: 0, s_change: 0 };
+  }
+  try {
+    const r = await fetch(`${API_URL}/api/task`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task, initData: tg.initData })
+    });
+    if (!r.ok) throw new Error(r.status);
+    const data = await r.json();
+    await loadProfile(); // обновляем локальные данные
+    return data;
+  } catch (e) {
+    console.error("sendTask failed:", e);
+    toast("Ошибка синхронизации");
+    return null;
+  }
+}
+
+/* ================================== robot */
 let stepsDone = 0;
 function step() {
   if (stepsDone >= 5) return;
   stepsDone++;
   document.getElementById('steps').textContent = stepsDone;
   document.getElementById('cnt').textContent = stepsDone + '/5';
-  if (stepsDone === 5) { document.getElementById('report').disabled = false; toast('✅ Готово к отправке'); }
+  if (stepsDone === 5) {
+    document.getElementById('report').disabled = false;
+    toast('✅ Готово к отправке');
+  }
 }
-function reportRobot() {
-  const p = JSON.stringify({ task: 'robot_win', b: 100, s: 25 });
-  tg?.sendData ? tg.sendData(p) : toast(p);
-  stepsDone = 0;
-  document.getElementById('steps').textContent = 0;
-  document.getElementById('cnt').textContent = '0/5';
+async function reportRobot() {
+  if (stepsDone < 5) return;
   document.getElementById('report').disabled = true;
+  const r = await sendTask('robot_win');
+  if (r && r.ok) {
+    tg?.sendData?.(JSON.stringify({ task: 'robot_win' }));
+    stepsDone = 0;
+    document.getElementById('steps').textContent = 0;
+    document.getElementById('cnt').textContent = '0/5';
+    toast(`✅ +${r.b_change}💰 / +${r.s_change}XP`);
+  } else {
+    document.getElementById('report').disabled = false;
+  }
 }
 
-/* ttt */
+/* ================================== tic tac toe */
 let board, over, tttInit = false;
 const W = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 function initTTT() { tttInit = true; resetTTT(); }
@@ -506,7 +587,8 @@ function resetTTT() {
     b.onclick = () => play(i);
     el.appendChild(b);
   }
-  const s = document.getElementById('ttt-status'); s.textContent = 'Ваш ход'; s.style.color = '';
+  const s = document.getElementById('ttt-status');
+  s.textContent = 'Ваш ход'; s.style.color = '';
 }
 const win = p => W.some(c => c.every(i => board[i] === p));
 function play(i) {
@@ -532,32 +614,26 @@ function draw() {
     b.disabled = !!board[i] || over;
   });
 }
-function fin(r) {
+async function fin(r) {
   over = true; draw();
   const s = document.getElementById('ttt-status');
-  if (r === 'win') { s.textContent = '🎉 Победа! +50 / +15'; s.style.color = '#4ADE80'; tg?.sendData?.(JSON.stringify({ task: 'ttt_win', b: 50, s: 15 })); }
-  else if (r === 'lose') { s.textContent = 'ИИ победил'; s.style.color = '#F87171'; }
-  else { s.textContent = 'Ничья'; s.style.color = 'var(--text-2)'; }
+  let task, color, text;
+  if (r === 'win')  { task = 'ttt_win';  color = '#4ADE80'; text = '🎉 Победа!'; }
+  else if (r === 'lose') { task = 'ttt_lose'; color = '#F87171'; text = 'ИИ победил'; }
+  else { task = 'ttt_draw'; color = 'var(--text-2)'; text = 'Ничья'; }
+  s.textContent = text; s.style.color = color;
+  const res = await sendTask(task);
+  if (res && res.ok) {
+    tg?.sendData?.(JSON.stringify({ task }));
+    if (res.b_change || res.s_change) toast(`+${res.b_change}💰 / +${res.s_change}XP`);
+  }
 }
 
-/* leaderboard */
-const TOP = [
-  ['Sarah J.', 45200, 1], ['Mike T.', 42100, 3], ['Emma W.', 39850, 5],
-  ['David L.', 38200, 12], ['Olivia R.', 36500, 9], ['Jordan P.', 35900, 13],
-  ['Priya N.', 34700, 25], ['Noah K.', 33450, 15], ['Mia S.', 32800, 44], ['Leo F.', 31900, 53],
-];
-document.getElementById('lb-body').innerHTML = TOP.map(([n, s, img], i) => `
-  <div class="lb-row">
-    <span class="c-rank">${i + 1}</span>
-    <span class="c-user">
-      <span class="ava"><img src="https://i.pravatar.cc/72?img=${img}" alt="" onerror="this.remove()"></span>
-      <span class="nm">${n}</span>
-    </span>
-    <span class="c-score">${s.toLocaleString('en-US')}</span>
-  </div>`).join('');
+/* ================================== init */
+loadProfile();
 
-/* chat links */
-document.querySelectorAll('.chat-link, .card-head a').forEach(a => a.addEventListener('click', e => {
+/* Ссылки «Открыть в чате» */
+document.querySelectorAll('.chat-link').forEach(a => a.addEventListener('click', e => {
   e.preventDefault();
   tg?.openTelegramLink ? tg.openTelegramLink('https://t.me/your_bot') : toast('Откройте в Telegram');
 }));
