@@ -1,59 +1,566 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лига Инженеров - Управление</title>
-    <script src="https://telegram.org"></script>
-    <style>
-        body { font-family: sans-serif; text-align: center; background: #1c1c1e; color: white; padding: 20px; margin: 0; }
-        .joystick { display: grid; grid-template-columns: repeat(3, 70px); gap: 10px; justify-content: center; margin: 40px auto; }
-        button { padding: 15px; font-size: 18px; border: none; border-radius: 12px; background: #007aff; color: white; cursor: pointer; font-weight: bold; }
-        button:active { background: #0051a8; }
-        .status { margin-top: 25px; font-size: 16px; color: #34c759; min-height: 24px; }
-        .win-btn { background: #34c759; width: 80%; max-width: 250px; margin: 20px auto; padding: 15px; display: block; font-size: 16px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Quantum Spirit 33472</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Figma-exact */
+    --grad-0: #314450;
+    --grad-78: #05131B;
+    --grad-100: #000000;
+
+    --fill-light: rgba(26, 45, 62, .60);      /* большие карточки */
+    --stroke-light: rgba(255, 255, 255, .094); /* FFFFFF 9.41% */
+    --fill-dark: rgba(22, 36, 54, .85);        /* статы / кнопки / строки */
+    --stroke-dark: rgba(42, 69, 96, .55);      /* 2A4560 */
+    --fill-challenge: #1F2F3E;
+    --fill-lb: #0E2030;
+    --stroke-lb: #1E3A52;
+
+    --accent: #4A9EFF;
+    --text-1: #FFFFFF;
+    --text-2: rgba(255, 255, 255, .55);
+    --text-3: rgba(255, 255, 255, .38);
+    --gray-avatar: #C2C6CA;
+    --gray-thumb: #C8CDD2;
+
+    --pad: 18px;            /* (390 - 353) / 2 ≈ 18 */
+    --r-card: 22px;
+    --r-box: 14px;
+    --r-sm: 12px;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: radial-gradient(ellipse 80% 120% at 25% 15%,
+                var(--grad-0) 0%, var(--grad-78) 78%, var(--grad-100) 100%);
+    background-attachment: fixed;
+    color: var(--text-1);
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ============ SCREENS ============ */
+  .screen {
+    display: none;
+    padding: 20px var(--pad) 110px;   /* низ — место под nav-pill */
+  }
+  .screen.active { display: block; animation: in .22s ease; }
+  @keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+  .screen-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px;
+  }
+  .screen-head h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+  .screen-head a  { font-size: 14px; font-weight: 500; color: var(--accent); text-decoration: none; }
+
+  /* ============ CARDS ============ */
+  .card {
+    background: var(--fill-light);
+    border: 1px solid var(--stroke-light);
+    border-radius: var(--r-card);
+    padding: 20px;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .card + .card { margin-top: 14px; }
+
+  .card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px;
+  }
+  .card-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+  .card-head a  { font-size: 13px; font-weight: 500; color: var(--accent); text-decoration: none; }
+
+  /* ============ PROFILE ============ */
+  .profile-row { display: flex; align-items: center; gap: 16px; }
+  .avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--gray-avatar);
+    overflow: hidden; flex-shrink: 0;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .p-name { font-size: 24px; font-weight: 800; letter-spacing: -.4px; }
+  .p-user { font-size: 14px; color: var(--text-2); margin-top: 3px; }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+  .stat {
+    background: var(--fill-dark);
+    border: 1px solid var(--stroke-dark);
+    border-radius: var(--r-box);
+    padding: 14px 16px;
+  }
+  .stat .l { font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--text-2); }
+  .stat .v { font-size: 24px; font-weight: 800; letter-spacing: -.4px; margin-top: 4px; }
+  .stat .v.blue { color: var(--accent); }
+
+  .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .action {
+    background: var(--fill-dark);
+    border: 1px solid var(--stroke-dark);
+    border-radius: var(--r-box);
+    padding: 16px 6px 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 9px;
+    cursor: pointer; transition: transform .12s;
+  }
+  .action:active { transform: scale(.96); }
+  .action svg { width: 24px; height: 24px; stroke: var(--text-1); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .action span { font-size: 13px; font-weight: 600; }
+
+  /* activity */
+  .act { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
+  .act + .act { border-top: 1px solid rgba(42, 69, 96, .35); }
+  .act-ico {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .act-ico svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .act-t { font-size: 14px; font-weight: 600; }
+  .act-s { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+
+  /* streaks */
+  .streaks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .streak {
+    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
+    border-radius: var(--r-sm); padding: 13px 12px;
+  }
+  .streak .t { font-size: 13px; font-weight: 600; }
+  .streak .t b { color: var(--accent); font-weight: 700; }
+  .streak .d { font-size: 11px; color: var(--text-2); line-height: 1.45; margin-top: 5px; }
+
+  /* ============ GAMES ============ */
+  .challenge {
+    background: var(--fill-challenge);
+    border-radius: var(--r-card);
+    padding: 15px 16px;
+    display: flex; align-items: center; gap: 13px;
+    margin-bottom: 18px;
+  }
+  .ch-ico {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--accent); display: grid; place-items: center; flex-shrink: 0;
+  }
+  .ch-ico svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ch-t { font-size: 15px; font-weight: 700; }
+  .ch-s { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+
+  .games { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 12px; }
+  .game { cursor: pointer; transition: transform .12s; }
+  .game:active { transform: scale(.97); }
+  .game .thumb {
+    width: 100%; aspect-ratio: 1;
+    background: var(--gray-thumb);
+    border-radius: var(--r-sm);
+  }
+  .game .n { font-size: 15px; font-weight: 600; margin-top: 9px; }
+  .game .s { font-size: 12px; color: var(--text-2); margin-top: 3px; }
+
+  /* ============ LEADERBOARD ============ */
+  .lb {
+    background: var(--fill-lb);
+    border: 1px solid var(--stroke-lb);
+    border-radius: var(--r-card);
+    overflow: hidden;
+  }
+  .lb-head, .lb-row {
+    display: flex; align-items: center;
+    padding: 0 16px;
+  }
+  .lb-head { height: 44px; border-bottom: 1px solid var(--stroke-lb); }
+  .lb-head span { font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--text-2); }
+  .lb-row { height: 62px; }
+  .lb-row + .lb-row { border-top: 1px solid rgba(30, 58, 82, .45); }
+  .c-rank  { width: 40px; font-size: 14px; font-weight: 700; color: var(--accent); }
+  .c-user  { flex: 1; display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .c-user .ava { width: 36px; height: 36px; border-radius: 50%; background: var(--gray-avatar); overflow: hidden; flex-shrink: 0; }
+  .c-user .ava img { width: 100%; height: 100%; object-fit: cover; }
+  .c-user .nm { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .c-score { font-size: 14px; font-weight: 700; }
+  .lb-head .c-score { text-align: right; width: 70px; }
+  .lb-row .c-score { width: 70px; text-align: right; }
+
+  /* ============ SUB-SCREENS (игры) ============ */
+  .sub { display: none; }
+  .sub.active { display: block; animation: in .22s ease; }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
+    border-radius: 10px; padding: 9px 14px;
+    font: 500 13px 'Inter', sans-serif; color: var(--text-1);
+    cursor: pointer; margin-bottom: 14px;
+  }
+  .back:active { transform: scale(.96); }
+
+  .joy-wrap { display: grid; place-items: center; margin: 22px 0 14px; }
+  .joy {
+    width: 196px; height: 196px; position: relative; border-radius: 50%;
+    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
+  }
+  .joy button {
+    position: absolute; width: 52px; height: 52px;
+    background: rgba(26, 45, 62, .9); border: 1px solid var(--stroke-dark);
+    border-radius: 12px; color: var(--text-1); font-size: 18px;
+    display: grid; place-items: center; cursor: pointer;
+  }
+  .joy button:active { background: var(--accent); border-color: var(--accent); }
+  .j-u { top: 7px; left: 50%; translate: -50% 0; }
+  .j-d { bottom: 7px; left: 50%; translate: -50% 0; }
+  .j-l { left: 7px; top: 50%; translate: 0 -50%; }
+  .j-r { right: 7px; top: 50%; translate: 0 -50%; }
+  .joy .cnt {
+    position: absolute; inset: 0; margin: auto;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: grid; place-items: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .steps { text-align: center; font-size: 13px; color: var(--text-2); }
+  .steps b { color: var(--accent); font-size: 20px; font-weight: 800; }
+  .primary {
+    width: 100%; margin-top: 14px;
+    background: var(--accent); border: none; border-radius: var(--r-box);
+    padding: 14px; color: #fff;
+    font: 600 15px 'Inter', sans-serif; cursor: pointer;
+  }
+  .primary:disabled { opacity: .35; cursor: not-allowed; }
+
+  .ttt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 264px; margin: 16px auto 6px; }
+  .ttt button {
+    aspect-ratio: 1; border-radius: var(--r-sm);
+    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
+    font: 700 30px 'Inter', sans-serif; color: var(--text-1);
+    display: grid; place-items: center; cursor: pointer;
+  }
+  .ttt button.x { color: var(--accent); }
+  .ttt button.o { color: #F87171; }
+  .ttt button:disabled { cursor: default; }
+  .ttt-status { text-align: center; font-size: 14px; font-weight: 500; min-height: 20px; }
+  .ghost {
+    display: block; margin: 12px auto 0;
+    background: var(--fill-dark); border: 1px solid var(--stroke-dark);
+    border-radius: 10px; padding: 10px 22px;
+    font: 500 13px 'Inter', sans-serif; color: var(--text-1); cursor: pointer;
+  }
+
+  /* ============ NAV PILL ============ */
+  .nav {
+    position: fixed; left: 16px; right: 16px; bottom: calc(14px + env(safe-area-inset-bottom));
+    height: 68px;
+    background: rgba(22, 36, 54, .72);
+    border: 1px solid rgba(42, 69, 96, .5);
+    border-radius: 34px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 10px 34px rgba(0, 0, 0, .55);
+    z-index: 100;
+  }
+  .tab {
+    background: none; border: none; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    color: var(--text-3); font-family: 'Inter', sans-serif;
+  }
+  .tab .ic {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: grid; place-items: center;
+    transition: background .18s;
+  }
+  .tab svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .tab .lb-l { font-size: 11px; font-weight: 500; }
+  .tab.on { color: var(--accent); }
+  .tab.on .ic { background: var(--accent); color: #fff; }
+
+  /* toast */
+  .toast {
+    position: fixed; top: 16px; left: 50%; translate: -50% -8px;
+    background: rgba(22, 36, 54, .9); border: 1px solid var(--stroke-dark);
+    border-radius: 12px; padding: 10px 18px;
+    font: 500 13px 'Inter', sans-serif;
+    backdrop-filter: blur(10px);
+    opacity: 0; pointer-events: none; transition: .25s;
+    z-index: 200; white-space: nowrap;
+  }
+  .toast.on { opacity: 1; translate: -50% 0; }
+</style>
 </head>
 <body>
 
-    <h2>🤖 Пульт Робототехника</h2>
-    <p style="color: #8e8e93;">Протестируйте моторы: сделайте не менее 5 шагов роботом, чтобы завершить миссию!</p>
-
-    <div class="joystick">
-        <div></div><button onclick="move('Вперед')">⬆️</button><div></div>
-        <button onclick="move('Влево')">⬅️</button><div>⚙️</div><button onclick="move('Вправо')">➡️</button>
-        <div></div><button onclick="move('Назад')">⬇️</button><div></div>
+<!-- ================= PROFILE ================= -->
+<section class="screen active" id="scr-profile">
+  <div class="card">
+    <div class="profile-row">
+      <div class="avatar" id="ava"></div>
+      <div>
+        <div class="p-name" id="p-name">Имя</div>
+        <div class="p-user" id="p-user">@юзернейм</div>
+      </div>
     </div>
+    <div class="stats">
+      <div class="stat"><div class="l">Очки</div><div class="v" id="v-score">12,450</div></div>
+      <div class="stat"><div class="l">Валюта</div><div class="v blue" id="v-bal">1,240</div></div>
+    </div>
+    <div class="actions">
+      <div class="action">
+        <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M8 5h8"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+        <span>Бонусы</span>
+      </div>
+      <div class="action">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span>Магазин</span>
+      </div>
+      <div class="action">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Настройки</span>
+      </div>
+    </div>
+  </div>
 
-    <div id="status" class="status">Ожидание запуска двигателей...</div>
+  <div class="card">
+    <div class="card-head"><h2>Недавняя активность</h2><a href="#">Показать все</a></div>
+    <div class="act">
+      <div class="act-ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M8 5h8"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></div>
+      <div><div class="act-t">Ежедневный бонус</div><div class="act-s">+150 валюты • 2ч назад</div></div>
+    </div>
+    <div class="act">
+      <div class="act-ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+      <div><div class="act-t">Покупка</div><div class="act-s">+120 валюты • 5ч назад</div></div>
+    </div>
+    <div class="act">
+      <div class="act-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+      <div><div class="act-t">Настройки изменены</div><div class="act-s">Уведомления вкл • 1д назад</div></div>
+    </div>
+  </div>
 
-    <button class="win-btn" onclick="finishMission()">✅ Сдать тех-отчет</button>
+  <div class="card">
+    <div class="card-head"><h2>Серии</h2><a href="#">Открыть в чате</a></div>
+    <div class="streaks">
+      <div class="streak"><div class="t">Ежедн. заход <b>7д</b></div><div class="d">Играйте каждый день для наград</div></div>
+      <div class="streak"><div class="t">Ежен. победы <b>3/5</b></div><div class="d">Еще 2 победы для получения приза</div></div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+<!-- ================= GAMES ================= -->
+<section class="screen" id="scr-games">
+  <div class="screen-head"><h1>Игры</h1><a href="#" class="chat-link">Открыть в чате</a></div>
 
-        let totalSteps = 0;
+  <div id="games-main">
+    <div class="challenge">
+      <div class="ch-ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M8 5h8"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></div>
+      <div><div class="ch-t">Ежедневный челлендж</div><div class="ch-s">Сыграйте 10 игр для получения приза</div></div>
+    </div>
+    <div class="games">
+      <div class="game" onclick="openSub('robot')"><div class="thumb"></div><div class="n">Управления роботом</div><div class="s">7 побед / 9 сыграно</div></div>
+      <div class="game" onclick="openSub('ttt')"><div class="thumb"></div><div class="n">Крестики нолики</div><div class="s">2 победы / 4 сыграно</div></div>
+      <div class="game" onclick="openSub('rps')"><div class="thumb"></div><div class="n">К-Н-Б</div><div class="s">26 побед / 51 сыграно</div></div>
+      <div class="game" onclick="openSub('race')"><div class="thumb"></div><div class="n">Гонка роботов</div><div class="s">26 побед / 51 сыграно</div></div>
+    </div>
+  </div>
 
-        function move(dir) {
-            totalSteps++;
-            document.getElementById('status').innerText = `Тест: Движение ${dir} (Шагов: ${totalSteps}/5)`;
-        }
+  <div class="sub" id="sub-robot">
+    <button class="back" onclick="closeSub('robot')">← Назад</button>
+    <div class="card">
+      <div class="card-head"><h2>Симулятор робота</h2></div>
+      <p style="font-size:13px;color:var(--text-2);">Пройдите 5 шагов и отправьте отчёт</p>
+      <div class="joy-wrap">
+        <div class="joy">
+          <button class="j-u" onclick="step()">▲</button>
+          <button class="j-d" onclick="step()">▼</button>
+          <button class="j-l" onclick="step()">◀</button>
+          <button class="j-r" onclick="step()">▶</button>
+          <div class="cnt" id="cnt">0/5</div>
+        </div>
+      </div>
+      <div class="steps">Шагов: <b id="steps">0</b></div>
+      <button class="primary" id="report" disabled onclick="reportRobot()">Отправить отчёт · +100 / +25</button>
+    </div>
+  </div>
 
-        function finishMission() {
-            if (totalSteps >= 5) {
-                // Формируем JSON-пакет для бота
-                const payload = JSON.stringify({
-                    task: "robot_win",
-                    b: 100, // Выдаем 100 коинов
-                    s: 25   // Выдаем 25 очков опыта
-                });
-                // Отправляем боту и закрываем окно
-                tg.sendData(payload);
-            } else {
-                alert(`⚠️ Калибровка не завершена! Робот сделал всего ${totalSteps} шагов из 5.`);
-            }
-        }
-    </script>
+  <div class="sub" id="sub-ttt">
+    <button class="back" onclick="closeSub('ttt')">← Назад</button>
+    <div class="card">
+      <div class="card-head"><h2>Крестики-нолики</h2></div>
+      <p style="font-size:13px;color:var(--text-2);">Вы — <b style="color:var(--accent)">X</b>. Победа: +50 / +15</p>
+      <div class="ttt-status" id="ttt-status">Ваш ход</div>
+      <div class="ttt" id="ttt"></div>
+      <button class="ghost" onclick="resetTTT()">Новая игра</button>
+    </div>
+  </div>
+
+  <div class="sub" id="sub-rps">
+    <button class="back" onclick="closeSub('rps')">← Назад</button>
+    <div class="card"><div class="card-head"><h2>К-Н-Б</h2></div><p style="font-size:13px;color:var(--text-2);margin-top:6px;">Игра доступна в чате: команда <b>/rps</b></p></div>
+  </div>
+
+  <div class="sub" id="sub-race">
+    <button class="back" onclick="closeSub('race')">← Назад</button>
+    <div class="card"><div class="card-head"><h2>Гонка роботов</h2></div><p style="font-size:13px;color:var(--text-2);margin-top:6px;">Скоро</p></div>
+  </div>
+</section>
+
+<!-- ================= TOP ================= -->
+<section class="screen" id="scr-top">
+  <div class="screen-head"><h1>Топ игроков</h1><a href="#" class="chat-link">Открыть в чате</a></div>
+  <div class="lb">
+    <div class="lb-head"><span class="c-rank">Ранг</span><span class="c-user"></span><span class="c-score">Очки</span></div>
+    <div id="lb-body"></div>
+  </div>
+</section>
+
+<!-- ================= NAV ================= -->
+<nav class="nav">
+  <button class="tab on" onclick="go('scr-profile', this, false)">
+    <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></svg></span>
+    <span class="lb-l">Профиль</span>
+  </button>
+  <button class="tab" onclick="go('scr-games', this, true)">
+    <span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M8 5h8"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></span>
+    <span class="lb-l">Игры</span>
+  </button>
+  <button class="tab" onclick="go('scr-top', this, false)">
+    <span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+    <span class="lb-l">Топы</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const tg = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+
+const user = tg?.initDataUnsafe?.user || { first_name: 'Имя', username: 'юзернейм', photo_url: null };
+document.getElementById('p-name').textContent = user.first_name || 'Имя';
+document.getElementById('p-user').textContent = '@' + (user.username || 'юзернейм');
+if (user.photo_url) document.getElementById('ava').innerHTML = `<img src="${user.photo_url}" alt="">`;
+
+/* nav */
+function go(id, btn, isGames) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+  if (!isGames) {
+    document.querySelectorAll('.sub').forEach(s => s.classList.remove('active'));
+    const m = document.getElementById('games-main'); if (m) m.style.display = '';
+  }
+  scrollTo({ top: 0 });
+}
+function openSub(n) {
+  document.getElementById('games-main').style.display = 'none';
+  document.querySelectorAll('.sub').forEach(s => s.classList.remove('active'));
+  document.getElementById('sub-' + n).classList.add('active');
+  if (n === 'ttt' && !tttInit) initTTT();
+  scrollTo({ top: 0, behavior: 'smooth' });
+}
+function closeSub(n) {
+  document.getElementById('sub-' + n).classList.remove('active');
+  document.getElementById('games-main').style.display = '';
+}
+
+/* toast */
+let toastT;
+function toast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m; t.classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2000);
+}
+
+/* robot */
+let stepsDone = 0;
+function step() {
+  if (stepsDone >= 5) return;
+  stepsDone++;
+  document.getElementById('steps').textContent = stepsDone;
+  document.getElementById('cnt').textContent = stepsDone + '/5';
+  if (stepsDone === 5) { document.getElementById('report').disabled = false; toast('✅ Готово к отправке'); }
+}
+function reportRobot() {
+  const p = JSON.stringify({ task: 'robot_win', b: 100, s: 25 });
+  tg?.sendData ? tg.sendData(p) : toast(p);
+  stepsDone = 0;
+  document.getElementById('steps').textContent = 0;
+  document.getElementById('cnt').textContent = '0/5';
+  document.getElementById('report').disabled = true;
+}
+
+/* ttt */
+let board, over, tttInit = false;
+const W = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function initTTT() { tttInit = true; resetTTT(); }
+function resetTTT() {
+  board = Array(9).fill(''); over = false;
+  const el = document.getElementById('ttt'); el.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const b = document.createElement('button');
+    b.onclick = () => play(i);
+    el.appendChild(b);
+  }
+  const s = document.getElementById('ttt-status'); s.textContent = 'Ваш ход'; s.style.color = '';
+}
+const win = p => W.some(c => c.every(i => board[i] === p));
+function play(i) {
+  if (over || board[i]) return;
+  board[i] = 'X'; draw();
+  if (win('X')) return fin('win');
+  if (board.every(Boolean)) return fin('draw');
+  document.getElementById('ttt-status').textContent = 'Ход ИИ…';
+  setTimeout(ai, 350);
+}
+function ai() {
+  const e = board.map((v, i) => v ? null : i).filter(v => v !== null);
+  if (!e.length) return;
+  board[e[Math.random() * e.length | 0]] = 'O'; draw();
+  if (win('O')) return fin('lose');
+  if (board.every(Boolean)) return fin('draw');
+  document.getElementById('ttt-status').textContent = 'Ваш ход';
+}
+function draw() {
+  document.querySelectorAll('#ttt button').forEach((b, i) => {
+    b.textContent = board[i];
+    b.className = board[i] === 'X' ? 'x' : board[i] === 'O' ? 'o' : '';
+    b.disabled = !!board[i] || over;
+  });
+}
+function fin(r) {
+  over = true; draw();
+  const s = document.getElementById('ttt-status');
+  if (r === 'win') { s.textContent = '🎉 Победа! +50 / +15'; s.style.color = '#4ADE80'; tg?.sendData?.(JSON.stringify({ task: 'ttt_win', b: 50, s: 15 })); }
+  else if (r === 'lose') { s.textContent = 'ИИ победил'; s.style.color = '#F87171'; }
+  else { s.textContent = 'Ничья'; s.style.color = 'var(--text-2)'; }
+}
+
+/* leaderboard */
+const TOP = [
+  ['Sarah J.', 45200, 1], ['Mike T.', 42100, 3], ['Emma W.', 39850, 5],
+  ['David L.', 38200, 12], ['Olivia R.', 36500, 9], ['Jordan P.', 35900, 13],
+  ['Priya N.', 34700, 25], ['Noah K.', 33450, 15], ['Mia S.', 32800, 44], ['Leo F.', 31900, 53],
+];
+document.getElementById('lb-body').innerHTML = TOP.map(([n, s, img], i) => `
+  <div class="lb-row">
+    <span class="c-rank">${i + 1}</span>
+    <span class="c-user">
+      <span class="ava"><img src="https://i.pravatar.cc/72?img=${img}" alt="" onerror="this.remove()"></span>
+      <span class="nm">${n}</span>
+    </span>
+    <span class="c-score">${s.toLocaleString('en-US')}</span>
+  </div>`).join('');
+
+/* chat links */
+document.querySelectorAll('.chat-link, .card-head a').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  tg?.openTelegramLink ? tg.openTelegramLink('https://t.me/your_bot') : toast('Откройте в Telegram');
+}));
+</script>
 </body>
 </html>
